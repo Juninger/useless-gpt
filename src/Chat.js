@@ -1,20 +1,46 @@
-import { useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import ChatInput from "./Components/ChatInput";
 import SiteHeader from "./Components/SiteHeader";
 import UserMessage from "./Components/UserMessage";
 import BotMessage from "./Components/BotMessage";
+import axios from 'axios';
 
 function Chat() {
 
   const inputRef = useRef();
-  const [messages, setMessages] = useState([]);
+  const [userMessages, setUserMessages] = useState([]);
+  const [botMessages, setBotMessages] = useState([]);
 
   function addMessage(message) {
-    console.log(message);
-    setMessages([...messages, message]);
+
+    getKanyeQuote()
+      .then((resp) => { //TODO: Error handling
+
+        const newBotMessage = {
+          text: resp,
+          author: 'Kanye West',
+          url: 'https://github.com/ajzbc/kanye.rest/blob/master/quotes.json',
+          source: 'source'
+        }
+
+        setBotMessages([...botMessages, newBotMessage]);
+        /*
+        make sure to always update userMessage last, as this will trigger 
+        a re-render and needs botmessage to be ready
+        */
+        setUserMessages([...userMessages, message]);
+      });
+
   };
 
+  function getKanyeQuote() {
 
+    return axios.get('https://api.kanye.rest') //TODO: Error handling
+      .then((response) => {
+        const quote = response.data.quote;
+        return quote;
+      });
+  }
 
   return (
     <>
@@ -22,21 +48,19 @@ function Chat() {
         <SiteHeader />
 
         <div id="chat-container" className="container overflow-auto" style={{ maxHeight: "calc(95vh - 150px)" }}>
-          {/* Example of message-style below */}
 
-          <hr />
-
-          {/* Example of how to render messages below */}
-          <BotMessage></BotMessage>
-          {messages.map((message) => (
-            <UserMessage message={message}></UserMessage>
+          {userMessages.map((message, index) => (
+            <Fragment key={message.text+botMessages[index].text}>
+              <UserMessage key={index+message.text} message={message} />
+              <BotMessage key={index+botMessages[index].text} message={botMessages[index]} />
+            </Fragment>
           ))}
         </div>
-          
+
         <ChatInput onSend={addMessage}></ChatInput>
-        
+
       </div>
-      
+
     </>
   );
 }
