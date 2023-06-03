@@ -5,7 +5,7 @@ import UserMessage from "./Components/UserMessage";
 import BotMessage from "./Components/BotMessage";
 import axios from 'axios';
 import anime from 'animejs';
-import Spinner from 'react-bootstrap/Spinner';
+import PlaceholdeMessage from "./Components/PlaceholdeMessage";
 
 function Chat() {
   const [isLoading, setIsLoading] = useState(true);
@@ -23,8 +23,9 @@ function Chat() {
       anime({ //customize values and props to change animation style
         targets: userMessageRef.current,
         opacity: [0, 1],
-        translateX: [-100, 0],
-        duration: 500,
+        translateY: [100, 0],
+        scale: [0, 1],
+        duration: 300,
         easing: "easeOutQuad",
       });
     }
@@ -36,8 +37,9 @@ function Chat() {
       anime({ //customize values and props to change animation style
         targets: botMessageRef.current,
         opacity: [0, 1],
-        translateX: [-200, 0],
-        duration: 500,
+        translateY: [30, 0],
+        scale: [0, 1],
+        duration: 300,
         easing: "easeOutQuad",
       });
     }
@@ -45,11 +47,11 @@ function Chat() {
     To make sure the animation triggers when the artifical loading component is removed,
     isLoading is passed as a dependency    
     */
-  }, [isLoading]);
+  }, [botMessages, isLoading]);
 
   // Generates a random delay to simulate the UselessGPT thinking (which it really really really isn't)
   useEffect(() => {
-    const delay = Math.floor(Math.random() * 2000) + 1000;
+    const delay = Math.floor(Math.random() * 2000) + 2000;
     setIsLoading(true); // Resets loading state when a new bot message is added
     setTimeout(() => {
       setIsLoading(false);
@@ -92,26 +94,16 @@ function Chat() {
 
   return (
     <>
-      <div className="container bg-dark-subtle w-85 mt-4 pt-5" style={{ minHeight: "95vh", display: "flex", flexDirection: "column" }}>
+      <div className="container bg-dark-subtle mt-4 pt-5" style={{ minHeight: "95vh", display: "flex", flexDirection: "column" }}>
         <SiteHeader />
 
-        <div id="chat-container" className="container overflow-auto" style={{ maxHeight: "calc(95vh - 150px)" }}>
+        <div id="chat-container" className="overflow-x-hidden p-3" style={{ maxHeight: "calc(95vh - 150px)", width: "100%" }}>
           {userMessages.map((message, index) => (
             <Fragment key={message.text + botMessages[index].text}>
               <UserMessage key={index + message.text} message={message} ref={userMessageRef} />
               {isLoading && index === userMessages.length - 1 ? (
-                // Checkig index to only render for latest message
-                <>
-                  {/* PLACEHOLDER LOADING COMPONENTS */}
-                  <Spinner animation="grow" variant="primary" />
-                  <Spinner animation="grow" variant="secondary" />
-                  <Spinner animation="grow" variant="success" />
-                  <Spinner animation="grow" variant="danger" />
-                  <Spinner animation="grow" variant="warning" />
-                  <Spinner animation="grow" variant="info" />
-                  <Spinner animation="grow" variant="light" />
-                  <Spinner animation="grow" variant="dark" />
-                </>
+                // Checking index to only render placeholder for latest message
+                <PlaceholdeMessage></PlaceholdeMessage>
               ) : (
                 <BotMessage key={index + botMessages[index].text} message={botMessages[index]} ref={botMessageRef} />
               )}

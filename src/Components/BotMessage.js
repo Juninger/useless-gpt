@@ -16,7 +16,7 @@ const BotMessage = forwardRef(function BotMessage(props, ref) {
     }
 
     return (
-        <figure ref={ref} className="text-start">
+        <figure ref={ref} className="text-start overflow-hidden">
             <blockquote className="blockquote">
                 <p>{botPicture()} {message.text}</p>
             </blockquote>

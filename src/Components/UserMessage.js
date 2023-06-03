@@ -16,7 +16,7 @@ const UserMessage = forwardRef(function UserMessage(props, ref) {
     }
 
     return (
-        <figure ref={ref} className="text-end">
+        <figure ref={ref} className="text-end overflow-hidden">
             <blockquote className="blockquote">
                 <p>{message.text} {userPicture()}</p>
             </blockquote>
