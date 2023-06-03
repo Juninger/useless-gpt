@@ -3,6 +3,7 @@ import ChatInput from "./Components/ChatInput";
 import SiteHeader from "./Components/SiteHeader";
 import UserMessage from "./Components/UserMessage";
 import BotMessage from "./Components/BotMessage";
+import axios from 'axios';
 
 function Chat() {
 
@@ -12,7 +13,22 @@ function Chat() {
   function addMessage(message) {
     console.log(message);
     setMessages([...messages, message]);
+
+    getKanyeQuote()
+      .then((resp) => { //TODO: Error handling
+        console.log(resp);
+      })
+
   };
+
+  function getKanyeQuote() {
+
+    return axios.get('https://api.kanye.rest') //TODO: Error handling
+      .then((response) => {
+        const quote = response.data.quote;
+        return quote;
+      });
+  }
 
 
 
@@ -32,11 +48,11 @@ function Chat() {
             <UserMessage key={message.text + message.timestamp} message={message}></UserMessage>
           ))}
         </div>
-          
+
         <ChatInput onSend={addMessage}></ChatInput>
-        
+
       </div>
-      
+
     </>
   );
 }
