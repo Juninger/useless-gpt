@@ -16,10 +16,10 @@ export default function SiteHeader() {
     return (
         <>
             <Navbar className='p-3' fixed='top' bg='dark' variant='dark'>
-                <Container>
-                    <Navbar.Brand>UselessGPT</Navbar.Brand>
-                    <Navbar.Text>
-                        <span >
+                <Container key={'header-container'}>
+                    <Navbar.Brand key={'site-title'}>UselessGPT</Navbar.Brand>
+                    <Navbar.Text key={'github-link'}>
+                        <span>
                             <a href="https://github.com/Juninger/useless-gpt" target='_blank' rel="noreferrer" style={{ textDecoration: 'none' }} >
                                 GitHub {githubIcon()}
                             </a>

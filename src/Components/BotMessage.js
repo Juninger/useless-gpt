@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function BotMessage({ response, author, source }) {
+export default function BotMessage({ message }) {
 
     // Bootstrap Icon --> https://icons.getbootstrap.com/icons/robot/ 
     function botPicture() {
@@ -15,10 +15,16 @@ export default function BotMessage({ response, author, source }) {
     return (
         <figure className="text-start">
             <blockquote className="blockquote">
-                <p>{botPicture()} {'response:' + response}</p>
+                <p>{botPicture()} {message.text}</p>
             </blockquote>
-            <figcaption className="blockquote-footer">
-                {'author: ' + author} <cite title="Source Title">{'source: ' + source}</cite>
+            <figcaption
+                className="blockquote-footer">
+                {message.author + ', '}
+                <cite title="Source Title">
+                    <a href={message.url} target='_blank' rel='noreferrer'>
+                        {message.source}
+                    </a>
+                </cite>
             </figcaption>
         </figure>
     )
