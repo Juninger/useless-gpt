@@ -29,7 +29,7 @@ function Chat() {
           {/* Example of how to render messages below */}
           <BotMessage></BotMessage>
           {messages.map((message) => (
-            <UserMessage message={message}></UserMessage>
+            <UserMessage key={message.text + message.timestamp} message={message}></UserMessage>
           ))}
         </div>
           
