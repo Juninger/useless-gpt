@@ -17,10 +17,12 @@ function Chat() {
   const userMessageRef = useRef(null);
   const botMessageRef = useRef(null);
 
+  const chatContainerRef = useRef(null);
+
   // Automatically animates new messages when userMessages is updated with a new value
   useEffect(() => {
     if (userMessages.length > 0) {
-      anime({ //customize values and props to change animation style
+      anime({
         targets: userMessageRef.current,
         opacity: [0, 1],
         translateY: [100, 0],
@@ -28,13 +30,15 @@ function Chat() {
         duration: 300,
         easing: "easeOutQuad",
       });
+      const chatContainer = chatContainerRef.current;
+      chatContainer.scrollTop = chatContainer.scrollHeight;
     }
   }, [userMessages]);
 
   // Used to animate botMessages
   useEffect(() => {
     if (botMessages.length > 0) {
-      anime({ //customize values and props to change animation style
+      anime({
         targets: botMessageRef.current,
         opacity: [0, 1],
         translateY: [30, 0],
@@ -47,11 +51,11 @@ function Chat() {
     To make sure the animation triggers when the artifical loading component is removed,
     isLoading is passed as a dependency    
     */
-  }, [botMessages, isLoading]);
+  }, [isLoading]);
 
   // Generates a random delay to simulate the UselessGPT thinking (which it really really really isn't)
   useEffect(() => {
-    const delay = Math.floor(Math.random() * 2000) + 2000;
+    const delay = Math.floor(Math.random() * 2500) + 2000;
     setIsLoading(true); // Resets loading state when a new bot message is added
     setTimeout(() => {
       setIsLoading(false);
@@ -97,7 +101,7 @@ function Chat() {
       <div className="container bg-dark-subtle mt-4 pt-5" style={{ minHeight: "95vh", display: "flex", flexDirection: "column" }}>
         <SiteHeader />
 
-        <div id="chat-container" className="overflow-x-hidden p-3" style={{ maxHeight: "calc(95vh - 150px)", width: "100%" }}>
+        <div id="chat-container" ref={chatContainerRef} className="overflow-x-hidden p-3" style={{ maxHeight: "calc(95vh - 150px)", width: "100%" }}>
           {userMessages.map((message, index) => (
             <Fragment key={message.text + botMessages[index].text}>
               <UserMessage key={index + message.text} message={message} ref={userMessageRef} />
