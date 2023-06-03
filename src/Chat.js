@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import ChatInput from "./Components/ChatInput";
+import SiteHeader from "./Components/SiteHeader";
 
 function Chat() {
 
@@ -10,13 +11,12 @@ function Chat() {
     setMessages([...messages, "A new message"]);
   };
 
-  
 
-    return (
-      <div className="container bg-dark-subtle w-85 mt-3 pt-3" style={{ minHeight: "95vh", display: "flex", flexDirection: "column" }}>
 
-        {/* TODO: Add header maybe? */}
-        <h1>UselessGPT</h1>
+  return (
+    <>
+      <div className="container bg-dark-subtle w-85 mt-4 pt-5" style={{ minHeight: "95vh", display: "flex", flexDirection: "column" }}>
+        <SiteHeader />
 
         <div id="chat-container" className="container overflow-auto" style={{ maxHeight: "calc(95vh - 150px)" }}>
           {/* Example of message-style below */}
@@ -50,11 +50,13 @@ function Chat() {
             </figure>
           ))}
         </div>
-        
+
         <ChatInput onSend={addMessage}></ChatInput>
 
       </div>
-    );
-  }
+
+    </>
+  );
+}
 
 export default Chat;
