@@ -9,8 +9,9 @@ function Chat() {
   const inputRef = useRef();
   const [messages, setMessages] = useState([]);
 
-  function addMessage() {
-    setMessages([...messages, "A new message"]);
+  function addMessage(message) {
+    console.log(message);
+    setMessages([...messages, message]);
   };
 
 
