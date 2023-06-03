@@ -8,16 +8,17 @@ import anime from 'animejs';
 
 function Chat() {
 
-  const inputRef = useRef();
   const [userMessages, setUserMessages] = useState([]); //consider this 'questions'
   const [botMessages, setBotMessages] = useState([]); //consider this 'answers'
 
-  const userMessageRef = useRef(null);
+  //used to reference the current element to animate
+  const userMessageRef = useRef(null); 
   const botMessageRef = useRef(null);
 
+  // Automatically animates new messages when userMessages is updated with a new value
   useEffect(() => {
-    if (userMessages.length > 0) {
-      anime({
+    if (userMessages.length > 0) { //should be animated as soon as user sends a new message
+      anime({ //customize values and props to change animation style
         targets: userMessageRef.current,
         opacity: [0, 1],
         translateX: [-20, 0],
@@ -27,17 +28,24 @@ function Chat() {
     }
 
     if (botMessages.length > 0) {
-      anime({
-        targets: botMessageRef.current,
-        opacity: [0, 1],
-        translateX: [-20, 0],
-        duration: 500,
-        easing: "easeOutQuad",
-      });
-    }
 
+      // Generates a random animation delay to simulate the UselessGPT thinking (which it really really isn't)
+      const delay = Math.floor(Math.random() * 3000) + 2000;
+      
+      setTimeout(() => {
+        anime({ //customize values and props to change animation style
+          targets: botMessageRef.current,
+          opacity: [0, 1],
+          translateX: [-20, 0],
+          duration: 500,
+          easing: "easeOutQuad",
+        });
+      }, delay);
+    }
   }, [userMessages]);
 
+  // Called from ChatInput component when user sends a new message
+  // TODO: Update with logic to randomize which API that should be called to GET an answer
   function addMessage(message) {
 
     getKanyeQuote()
@@ -60,6 +68,7 @@ function Chat() {
 
   };
 
+  // Called to retrieve a random Kanye West quote 
   function getKanyeQuote() {
 
     return axios.get('https://api.kanye.rest') //TODO: Error handling
@@ -77,6 +86,7 @@ function Chat() {
         <div id="chat-container" className="container overflow-auto" style={{ maxHeight: "calc(95vh - 150px)" }}>
 
           {userMessages.map((message, index) => (
+            // index can be used on botMessages, as the two collections can be considered as 'questions' and 'answers' to each other
             <Fragment key={message.text + botMessages[index].text}>
               <UserMessage key={index + message.text} message={message} ref={userMessageRef} />
               <BotMessage key={index + botMessages[index].text} message={botMessages[index]} ref={botMessageRef} />
