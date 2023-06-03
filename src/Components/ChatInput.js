@@ -6,10 +6,10 @@ import Button from 'react-bootstrap/Button';
 
 export default function ChatInput({ onSend }) {
 
-    const [message, setMessage] = useState('');
+    const [messageText, setMessageText] = useState('');
 
     const handleInputChange = (event) => {
-        setMessage(event.target.value);
+        setMessageText(event.target.value);
     }
 
     const handleKeyPress = (event) => {
@@ -23,12 +23,25 @@ export default function ChatInput({ onSend }) {
     }
 
     const sendMessage = () => {
-        if (message.trim() !== '') {
-            onSend(message);
-            setMessage('');
+        if (messageText.trim() !== '') {
+
+            const messageObj = {
+                text: messageText,
+                timestamp: getCurrentTime()
+            };
+
+            onSend(messageObj);
+            setMessageText('');
         } else {
             //TODO: Create alert with empty-message warning
         }
+    }
+    
+    // Creates a timestamp for when the user sends a message
+    function getCurrentTime() {
+        // Options to remove the milliseconds and seconds from our timestamp
+        const timeFormat = { hour: '2-digit', minute: '2-digit'};
+        return new Date().toLocaleString(undefined, timeFormat);
     }
 
     // Bootstrap Icon --> https://icons.getbootstrap.com/icons/send/
@@ -47,7 +60,7 @@ export default function ChatInput({ onSend }) {
                     type="text"
                     placeholder="Send a message..."
                     aria-describedby="button-chat"
-                    value={message}
+                    value={messageText}
                     onChange={handleInputChange}
                     onKeyDown={handleKeyPress}
                     style={{ border: '1px solid grey' }}

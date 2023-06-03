@@ -12,20 +12,13 @@ export default function UserMessage({ message }) {
         )
     }
 
-    // Creates a timestamp for when the user sends a message
-    function getCurrentTime() {
-        // Options to remove the milliseconds and seconds from our timestamp
-        const timeFormat = { hour: '2-digit', minute: '2-digit'};
-        return new Date().toLocaleString(undefined, timeFormat);
-    }
-
     return (
         <figure className="text-end">
             <blockquote className="blockquote">
-                <p>{message} {userPicture()}</p>
+                <p>{message.text} {userPicture()}</p>
             </blockquote>
             <figcaption className="blockquote-footer">
-                You, <cite title="Source Title">{getCurrentTime()}</cite>
+                You, <cite title="Source Title">{message.timestamp}</cite>
             </figcaption>
         </figure>
     )
