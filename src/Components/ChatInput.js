@@ -8,20 +8,24 @@ export default function ChatInput({ onSend }) {
 
     const [messageText, setMessageText] = useState('');
 
+    // Updates state of messageText every time user types something
     const handleInputChange = (event) => {
         setMessageText(event.target.value);
     }
 
+    // Used to check if user pressed enter key to send message
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             sendMessage();
         }
     }
 
+    // Used when user clicks the send-button
     const handleSendClick = () => {
         sendMessage();
     }
 
+    // Handles all logic for passing the message object to main component for API-calls and rendering
     const sendMessage = () => {
         if (messageText.trim() !== '') {
 
