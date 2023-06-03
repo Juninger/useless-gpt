@@ -12,9 +12,23 @@ export default function ChatInput({ onSend }) {
         setMessage(event.target.value);
     }
 
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
     const handleSendClick = () => {
-        onSend(message);
-        setMessage('');
+        sendMessage();
+    }
+
+    const sendMessage = () => {
+        if (message.trim() !== '') {
+            onSend(message);
+            setMessage('');
+        } else {
+            //TODO: Create alert with empty-message warning
+        }
     }
 
     // Bootstrap Icon --> https://icons.getbootstrap.com/icons/send/
@@ -35,6 +49,7 @@ export default function ChatInput({ onSend }) {
                     aria-describedby="button-chat"
                     value={message}
                     onChange={handleInputChange}
+                    onKeyDown={handleKeyPress}
                     style={{ border: '1px solid grey' }}
 
                 />

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function UserMessage({ query }) {
+export default function UserMessage({ message }) {
 
     // Bootstrap Icon --> https://icons.getbootstrap.com/icons/person-workspace/
     function userPicture() {
@@ -22,7 +22,7 @@ export default function UserMessage({ query }) {
     return (
         <figure className="text-end">
             <blockquote className="blockquote">
-                <p>{'query: ' + query} {userPicture()}</p>
+                <p>{message} {userPicture()}</p>
             </blockquote>
             <figcaption className="blockquote-footer">
                 You, <cite title="Source Title">{getCurrentTime()}</cite>
