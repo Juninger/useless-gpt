@@ -9,8 +9,9 @@ function Chat() {
   const inputRef = useRef();
   const [messages, setMessages] = useState([]);
 
-  function addMessage() {
-    setMessages([...messages, "A new message"]);
+  function addMessage(message) {
+    console.log(message);
+    setMessages([...messages, message]);
   };
 
 
@@ -22,21 +23,20 @@ function Chat() {
 
         <div id="chat-container" className="container overflow-auto" style={{ maxHeight: "calc(95vh - 150px)" }}>
           {/* Example of message-style below */}
-          <UserMessage></UserMessage>
-          
+
           <hr />
 
           {/* Example of how to render messages below */}
           <BotMessage></BotMessage>
-          {/* {messages.map((message) => (
-            
-          ))} */}
+          {messages.map((message) => (
+            <UserMessage message={message}></UserMessage>
+          ))}
         </div>
-
+          
         <ChatInput onSend={addMessage}></ChatInput>
-
+        
       </div>
-
+      
     </>
   );
 }
