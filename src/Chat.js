@@ -5,8 +5,10 @@ import UserMessage from "./Components/UserMessage";
 import BotMessage from "./Components/BotMessage";
 import axios from 'axios';
 import anime from 'animejs';
+import Spinner from 'react-bootstrap/Spinner';
 
 function Chat() {
+  const [isLoading, setIsLoading] = useState(true);
 
   const [userMessages, setUserMessages] = useState([]); //consider this 'questions'
   const [botMessages, setBotMessages] = useState([]); //consider this 'answers'
@@ -21,28 +23,41 @@ function Chat() {
       anime({ //customize values and props to change animation style
         targets: userMessageRef.current,
         opacity: [0, 1],
-        translateX: [-20, 0],
+        translateX: [-100, 0],
         duration: 500,
         easing: "easeOutQuad",
       });
     }
+  }, [userMessages]);
 
+  useEffect(() => {
     if (botMessages.length > 0) {
 
       // Generates a random animation delay to simulate the UselessGPT thinking (which it really really isn't)
       const delay = Math.floor(Math.random() * 3000) + 2000;
-      
-      setTimeout(() => {
-        anime({ //customize values and props to change animation style
-          targets: botMessageRef.current,
-          opacity: [0, 1],
-          translateX: [-20, 0],
-          duration: 500,
-          easing: "easeOutQuad",
-        });
-      }, delay);
+
+      anime({ //customize values and props to change animation style
+        targets: botMessageRef.current,
+        opacity: [0, 1],
+        translateX: [-200, 0],
+        duration: 500,
+        easing: "easeOutQuad",
+      });
     }
-  }, [userMessages]);
+    /* 
+    To make sure the animation triggers when the artifical loading component is removed,
+    we pass isLoading as a dependency    
+    */ 
+  }, [botMessages, isLoading]);
+
+  useEffect(() => {
+    if (botMessages.length > 0) {
+      setIsLoading(true); // Set loading state to true when a new bot message is added
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 3000);
+    }
+  }, [botMessages]);
 
   // Called from ChatInput component when user sends a new message
   // TODO: Update with logic to randomize which API that should be called to GET an answer
@@ -59,11 +74,11 @@ function Chat() {
         }
 
         setBotMessages([...botMessages, newBotMessage]);
+        setUserMessages([...userMessages, message]);
         /*
         make sure to always update userMessage last, as this will trigger 
         a re-render and needs botmessage to be ready
         */
-        setUserMessages([...userMessages, message]);
       });
 
   };
@@ -84,20 +99,31 @@ function Chat() {
         <SiteHeader />
 
         <div id="chat-container" className="container overflow-auto" style={{ maxHeight: "calc(95vh - 150px)" }}>
-
           {userMessages.map((message, index) => (
-            // index can be used on botMessages, as the two collections can be considered as 'questions' and 'answers' to each other
             <Fragment key={message.text + botMessages[index].text}>
               <UserMessage key={index + message.text} message={message} ref={userMessageRef} />
-              <BotMessage key={index + botMessages[index].text} message={botMessages[index]} ref={botMessageRef} />
+              {isLoading && index === userMessages.length - 1 ? (
+                // Checkig index to only render for latest message
+                <>
+                {/* PLACEHOLDER LOADING COMPONENTS */}
+                <Spinner animation="grow" variant="primary" />
+                <Spinner animation="grow" variant="secondary" />
+                <Spinner animation="grow" variant="success" />
+                <Spinner animation="grow" variant="danger" />
+                <Spinner animation="grow" variant="warning" />
+                <Spinner animation="grow" variant="info" />
+                <Spinner animation="grow" variant="light" />
+                <Spinner animation="grow" variant="dark" />
+                </>
+              ) : (
+                <BotMessage key={index + botMessages[index].text} message={botMessages[index]} ref={botMessageRef} />
+              )}
             </Fragment>
           ))}
         </div>
 
         <ChatInput onSend={addMessage}></ChatInput>
-
       </div>
-
     </>
   );
 }
