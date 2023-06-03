@@ -1,6 +1,9 @@
 import React from 'react'
+import { forwardRef } from 'react';
 
-export default function BotMessage({ message }) {
+const BotMessage = forwardRef(function BotMessage(props, ref) {
+
+    const { message } = props;
 
     // Bootstrap Icon --> https://icons.getbootstrap.com/icons/robot/ 
     function botPicture() {
@@ -13,7 +16,7 @@ export default function BotMessage({ message }) {
     }
 
     return (
-        <figure className="text-start">
+        <figure ref={ref} className="text-start">
             <blockquote className="blockquote">
                 <p>{botPicture()} {message.text}</p>
             </blockquote>
@@ -28,4 +31,6 @@ export default function BotMessage({ message }) {
             </figcaption>
         </figure>
     )
-}
+});
+
+export default BotMessage;

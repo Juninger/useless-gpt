@@ -1,6 +1,9 @@
 import React from 'react'
+import { forwardRef } from 'react';
 
-export default function UserMessage({ message }) {
+const UserMessage = forwardRef(function UserMessage(props, ref) {
+
+    const { message } = props;
 
     // Bootstrap Icon --> https://icons.getbootstrap.com/icons/person-workspace/
     function userPicture() {
@@ -13,7 +16,7 @@ export default function UserMessage({ message }) {
     }
 
     return (
-        <figure className="text-end">
+        <figure ref={ref} className="text-end">
             <blockquote className="blockquote">
                 <p>{message.text} {userPicture()}</p>
             </blockquote>
@@ -25,4 +28,6 @@ export default function UserMessage({ message }) {
             </figcaption>
         </figure>
     )
-}
+});
+
+export default UserMessage;

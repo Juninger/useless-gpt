@@ -78,8 +78,8 @@ function Chat() {
 
           {userMessages.map((message, index) => (
             <Fragment key={message.text + botMessages[index].text}>
-              <UserMessage key={index + message.text} message={message} alo={userMessageRef} />
-              <BotMessage key={index + botMessages[index].text} message={botMessages[index]} alo={botMessageRef} />
+              <UserMessage key={index + message.text} message={message} ref={userMessageRef} />
+              <BotMessage key={index + botMessages[index].text} message={botMessages[index]} ref={botMessageRef} />
             </Fragment>
           ))}
         </div>
