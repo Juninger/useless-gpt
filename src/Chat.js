@@ -1,15 +1,42 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef, useState, useEffect } from "react";
 import ChatInput from "./Components/ChatInput";
 import SiteHeader from "./Components/SiteHeader";
 import UserMessage from "./Components/UserMessage";
 import BotMessage from "./Components/BotMessage";
 import axios from 'axios';
+import anime from 'animejs';
 
 function Chat() {
 
   const inputRef = useRef();
-  const [userMessages, setUserMessages] = useState([]);
-  const [botMessages, setBotMessages] = useState([]);
+  const [userMessages, setUserMessages] = useState([]); //consider this 'questions'
+  const [botMessages, setBotMessages] = useState([]); //consider this 'answers'
+
+  const userMessageRef = useRef(null);
+  const botMessageRef = useRef(null);
+
+  useEffect(() => {
+    if (userMessages.length > 0) {
+      anime({
+        targets: userMessageRef.current,
+        opacity: [0, 1],
+        translateX: [-20, 0],
+        duration: 500,
+        easing: "easeOutQuad",
+      });
+    }
+
+    if (botMessages.length > 0) {
+      anime({
+        targets: botMessageRef.current,
+        opacity: [0, 1],
+        translateX: [-20, 0],
+        duration: 500,
+        easing: "easeOutQuad",
+      });
+    }
+
+  }, [userMessages]);
 
   function addMessage(message) {
 
@@ -50,9 +77,9 @@ function Chat() {
         <div id="chat-container" className="container overflow-auto" style={{ maxHeight: "calc(95vh - 150px)" }}>
 
           {userMessages.map((message, index) => (
-            <Fragment key={message.text+botMessages[index].text}>
-              <UserMessage key={index+message.text} message={message} />
-              <BotMessage key={index+botMessages[index].text} message={botMessages[index]} />
+            <Fragment key={message.text + botMessages[index].text}>
+              <UserMessage key={index + message.text} message={message} alo={userMessageRef} />
+              <BotMessage key={index + botMessages[index].text} message={botMessages[index]} alo={botMessageRef} />
             </Fragment>
           ))}
         </div>

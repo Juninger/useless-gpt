@@ -17,8 +17,11 @@ export default function UserMessage({ message }) {
             <blockquote className="blockquote">
                 <p>{message.text} {userPicture()}</p>
             </blockquote>
-            <figcaption className="blockquote-footer">
-                You, <cite title="Source Title">{message.timestamp}</cite>
+            <figcaption
+                className="blockquote-footer">
+                You,
+                <cite title="Source Title">
+                    {message.timestamp}</cite>
             </figcaption>
         </figure>
     )
