@@ -14,12 +14,12 @@ function Chat() {
   const [botMessages, setBotMessages] = useState([]); //consider this 'answers'
 
   //used to reference the current element to animate
-  const userMessageRef = useRef(null); 
+  const userMessageRef = useRef(null);
   const botMessageRef = useRef(null);
 
   // Automatically animates new messages when userMessages is updated with a new value
   useEffect(() => {
-    if (userMessages.length > 0) { //should be animated as soon as user sends a new message
+    if (userMessages.length > 0) {
       anime({ //customize values and props to change animation style
         targets: userMessageRef.current,
         opacity: [0, 1],
@@ -30,12 +30,9 @@ function Chat() {
     }
   }, [userMessages]);
 
+  // Used to animate botMessages
   useEffect(() => {
     if (botMessages.length > 0) {
-
-      // Generates a random animation delay to simulate the UselessGPT thinking (which it really really isn't)
-      const delay = Math.floor(Math.random() * 3000) + 2000;
-
       anime({ //customize values and props to change animation style
         targets: botMessageRef.current,
         opacity: [0, 1],
@@ -46,17 +43,17 @@ function Chat() {
     }
     /* 
     To make sure the animation triggers when the artifical loading component is removed,
-    we pass isLoading as a dependency    
-    */ 
-  }, [botMessages, isLoading]);
+    isLoading is passed as a dependency    
+    */
+  }, [isLoading]);
 
+  // Generates a random delay to simulate the UselessGPT thinking (which it really really really isn't)
   useEffect(() => {
-    if (botMessages.length > 0) {
-      setIsLoading(true); // Set loading state to true when a new bot message is added
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 3000);
-    }
+    const delay = Math.floor(Math.random() * 2000) + 1000;
+    setIsLoading(true); // Resets loading state when a new bot message is added
+    setTimeout(() => {
+      setIsLoading(false);
+    }, delay);
   }, [botMessages]);
 
   // Called from ChatInput component when user sends a new message
@@ -105,15 +102,15 @@ function Chat() {
               {isLoading && index === userMessages.length - 1 ? (
                 // Checkig index to only render for latest message
                 <>
-                {/* PLACEHOLDER LOADING COMPONENTS */}
-                <Spinner animation="grow" variant="primary" />
-                <Spinner animation="grow" variant="secondary" />
-                <Spinner animation="grow" variant="success" />
-                <Spinner animation="grow" variant="danger" />
-                <Spinner animation="grow" variant="warning" />
-                <Spinner animation="grow" variant="info" />
-                <Spinner animation="grow" variant="light" />
-                <Spinner animation="grow" variant="dark" />
+                  {/* PLACEHOLDER LOADING COMPONENTS */}
+                  <Spinner animation="grow" variant="primary" />
+                  <Spinner animation="grow" variant="secondary" />
+                  <Spinner animation="grow" variant="success" />
+                  <Spinner animation="grow" variant="danger" />
+                  <Spinner animation="grow" variant="warning" />
+                  <Spinner animation="grow" variant="info" />
+                  <Spinner animation="grow" variant="light" />
+                  <Spinner animation="grow" variant="dark" />
                 </>
               ) : (
                 <BotMessage key={index + botMessages[index].text} message={botMessages[index]} ref={botMessageRef} />
