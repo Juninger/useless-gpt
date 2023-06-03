@@ -12,14 +12,21 @@ export default function UserMessage({ query }) {
         )
     }
 
+    // Creates a timestamp for when the user sends a message
+    function getCurrentTime() {
+        // Options to remove the milliseconds and seconds from our timestamp
+        const timeFormat = { hour: '2-digit', minute: '2-digit'};
+        return new Date().toLocaleString(undefined, timeFormat);
+    }
+
     return (
         <figure className="text-end">
             <blockquote className="blockquote">
                 <p>{'query: ' + query} {userPicture()}</p>
             </blockquote>
-            {/* <figcaption className="blockquote-footer">
-                Someone famous in <cite title="Source Title">Source Title</cite>
-            </figcaption> */}
+            <figcaption className="blockquote-footer">
+                You, <cite title="Source Title">{getCurrentTime()}</cite>
+            </figcaption>
         </figure>
     )
 }
