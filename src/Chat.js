@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef, useState, useEffect } from "react";
 import ChatInput from "./Components/ChatInput";
 import SiteHeader from "./Components/SiteHeader";
 import UserMessage from "./Components/UserMessage";
@@ -7,10 +7,21 @@ import axios from 'axios';
 
 function Chat() {
 
-  const inputRef = useRef();
-  const [userMessages, setUserMessages] = useState([]);
-  const [botMessages, setBotMessages] = useState([]);
+  const [userMessages, setUserMessages] = useState([]); //consider this 'questions'
+  const [botMessages, setBotMessages] = useState([]); //consider this 'answers'
 
+  const chatContainerRef = useRef(null);
+
+  // Automatically scrolls to bottom when a new message is added
+  useEffect(() => {
+    if (userMessages.length > 0) {
+      const chatContainer = chatContainerRef.current;
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  }, [userMessages]);
+
+  // Called from ChatInput component when user sends a new message
+  // TODO: Update with logic to randomize which API that should be called to GET an answer
   function addMessage(message) {
 
     getKanyeQuote()
@@ -23,16 +34,18 @@ function Chat() {
           source: 'source'
         }
 
-        setBotMessages([...botMessages, newBotMessage]);
+        setUserMessages((prevMess) => [...prevMess, message]);
+        setBotMessages((prevMess) => [...prevMess, newBotMessage]);
+
         /*
         make sure to always update userMessage last, as this will trigger 
         a re-render and needs botmessage to be ready
         */
-        setUserMessages([...userMessages, message]);
       });
 
   };
 
+  // Called to retrieve a random Kanye West quote 
   function getKanyeQuote() {
 
     return axios.get('https://api.kanye.rest') //TODO: Error handling
@@ -44,23 +57,24 @@ function Chat() {
 
   return (
     <>
-      <div className="container bg-dark-subtle w-85 mt-4 pt-5" style={{ minHeight: "95vh", display: "flex", flexDirection: "column" }}>
+      <div className="container bg-dark-subtle mt-4 pt-5" style={{ minHeight: "95vh", display: "flex", flexDirection: "column" }}>
         <SiteHeader />
 
-        <div id="chat-container" className="container overflow-auto" style={{ maxHeight: "calc(95vh - 150px)" }}>
-
+        <div id="chat-container" ref={chatContainerRef} className="overflow-x-hidden p-3" style={{ maxHeight: "calc(95vh - 150px)", width: "100%" }}>
           {userMessages.map((message, index) => (
-            <Fragment key={message.text+botMessages[index].text}>
-              <UserMessage key={index+message.text} message={message} />
-              <BotMessage key={index+botMessages[index].text} message={botMessages[index]} />
+            <Fragment key={message.text + botMessages[index].text}>
+              <UserMessage key={index + message.text} message={message} />
+              <BotMessage
+                key={index + botMessages[index].text}
+                message={botMessages[index]}
+                last={index === botMessages.length-1} // If final element, we handle rendering & animations differently
+              />
             </Fragment>
           ))}
         </div>
 
         <ChatInput onSend={addMessage}></ChatInput>
-
       </div>
-
     </>
   );
 }

@@ -1,6 +1,24 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
+import anime from 'animejs';
 
-export default function UserMessage({ message }) {
+function UserMessage(props) {
+
+    const figureRef = useRef(null); // Reference to element that should be animated
+
+    const { message } = props;
+
+    // Triggers animation of figure-element when the component renders
+    useEffect(() => {
+        const figElement = figureRef.current;
+        anime({
+            targets: figElement,
+            opacity: [0, 1],
+            translateY: [30, 0],
+            scale: [0, 1],
+            duration: 300,
+            easing: "easeOutQuad",
+        });
+    }, []);
 
     // Bootstrap Icon --> https://icons.getbootstrap.com/icons/person-workspace/
     function userPicture() {
@@ -13,13 +31,18 @@ export default function UserMessage({ message }) {
     }
 
     return (
-        <figure className="text-end">
+        <figure ref={figureRef} className="text-end overflow-hidden">
             <blockquote className="blockquote">
                 <p>{message.text} {userPicture()}</p>
             </blockquote>
-            <figcaption className="blockquote-footer">
-                You, <cite title="Source Title">{message.timestamp}</cite>
+            <figcaption
+                className="blockquote-footer">
+                You,
+                <cite title="Source Title">
+                    {message.timestamp}</cite>
             </figcaption>
         </figure>
     )
-}
+};
+
+export default UserMessage;
