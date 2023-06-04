@@ -14,8 +14,6 @@ function Chat() {
 
   const [inputDisabled, setInputDisabled] = useState(false); //used to temporarily disable input field when waiting for response
 
-  const [showStartMessage, setShowStartMessage] = useState(true);
-
   const chatContainerRef = useRef(null);
 
   // Automatically scrolls to bottom when a new message is added
@@ -71,8 +69,6 @@ function Chat() {
 
       setBotMessages((prevMess) => [...prevMess, newBotMessage]);
       setUserMessages((prevMess) => [...prevMess, message]);
-      setShowStartMessage(false);
-
     })
       .catch((error) => { // Creates a manual error message if GET fails
         console.error('Error:', error);
@@ -84,7 +80,6 @@ function Chat() {
         }
         setBotMessages((prevMess) => [...prevMess, errorMessage]);
         setUserMessages((prevMess) => [...prevMess, message]);
-        setShowStartMessage(false);
       });
   };
 
@@ -141,9 +136,7 @@ function Chat() {
       <SiteHeader />
 
       <Container id="chat-container" ref={chatContainerRef} className="overflow-x-hidden p-3" style={{ maxHeight: "calc(95vh - 150px)", width: "100%" }}>
-        {showStartMessage && (
-          <WelcomeMessage/>
-        )}
+        <WelcomeMessage/>
         {userMessages.map((message, index) => (
           <Fragment key={message.text + botMessages[index].text}>
             <UserMessage key={index + message.text} message={message} />

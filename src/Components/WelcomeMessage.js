@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import Alert from 'react-bootstrap/Alert';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -7,6 +7,7 @@ import anime from 'animejs';
 
 export default function WelcomeMessage() {
 
+    const [show, setShow] = useState(true); 
     const alertRef = useRef(null);
 
     // Triggers animation of alert-element when the component renders
@@ -35,7 +36,7 @@ export default function WelcomeMessage() {
     // Bootstrap Icon --> https://icons.getbootstrap.com/icons/chat-left-text/ 
     function chatIcon() {
         return (
-            <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-chat-left-text" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" className="bi bi-chat-left-text" viewBox="0 0 16 16">
                 <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
                 <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z" />
             </svg>
@@ -45,10 +46,18 @@ export default function WelcomeMessage() {
     return (
         <Row>
             <Col>
-                <Alert ref={alertRef} variant="success" className="text-center" transition='true'>
-                    <Alert.Heading>{botIcon()} - Welcome to UselessGPT! - {chatIcon()}</Alert.Heading>
-                    Start by asking a question
-                </Alert>
+                {show &&
+                    <Alert
+                        ref={alertRef}
+                        onClose={() => setShow(false)}
+                        variant="success"
+                        className="text-center"
+                        dismissible
+                    >
+                        <Alert.Heading>{botIcon()} - Welcome to UselessGPT! - {chatIcon()}</Alert.Heading>
+                        Start by asking a question. Click a message to see more info.
+                    </Alert>
+                }
             </Col>
         </Row>
     )
