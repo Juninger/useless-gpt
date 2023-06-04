@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import anime from 'animejs';
 import Spinner from 'react-bootstrap/Spinner'
+import Figure from 'react-bootstrap/Figure';
 
 
 function BotMessage(props) {
@@ -71,7 +72,7 @@ function BotMessage(props) {
 
     if (isLoading && last) { // Show placeholder figure while "loading" new message
         return (
-            <figure ref={placeholderRef} className="text-start overflow-hidden">
+            <Figure ref={placeholderRef} className="text-start overflow-hidden">
                 <blockquote className="blockquote">
                     <>
                         {hourGlassIcon()}
@@ -84,21 +85,21 @@ function BotMessage(props) {
                         <Spinner size='sm' animation="grow" variant="primary" />
                     </>
                 </blockquote>
-                <figcaption className="blockquote-footer">
+                <Figure.Caption className="blockquote-footer">
                     <cite title="Source Title">
                         {'Thinking...'}
                     </cite>
-                </figcaption>
-            </figure>
+                </Figure.Caption>
+            </Figure>
         )
 
     } else { // Show botmessage when "loading" has finished
         return (
-            <figure ref={botMessageRef} className="text-start overflow-hidden">
+            <Figure ref={botMessageRef} className="text-start overflow-hidden">
                 <blockquote className="blockquote">
                     <p>{botPicture()} {message.text}</p>
                 </blockquote>
-                <figcaption
+                <Figure.Caption
                     className="blockquote-footer">
                     {message.author + ', '}
                     <cite title="Source Title">
@@ -106,8 +107,8 @@ function BotMessage(props) {
                             {message.source}
                         </a>
                     </cite>
-                </figcaption>
-            </figure>
+                </Figure.Caption>
+            </Figure>
         )
     }
 };
