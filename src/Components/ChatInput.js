@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 
 
-export default function ChatInput({ onSend }) {
+export default function ChatInput({ onSend, disabled }) {
 
     const [messageText, setMessageText] = useState('');
+    const inputRef = useRef(null);
+    
+    // Focuses the input field after re-enabling it
+    useEffect(() => { 
+        inputRef.current.focus();
+    }, [disabled]);
 
     // Updates state of messageText every time user types something
     const handleInputChange = (event) => {
@@ -38,7 +44,7 @@ export default function ChatInput({ onSend }) {
             onSend(messageObj);
             setMessageText('');
         } else {
-            //TODO: Create alert with empty-message warning
+            alert("Can not send an empty message");
         }
     }
     
@@ -61,6 +67,7 @@ export default function ChatInput({ onSend }) {
         <Container className="mt-auto">
             <InputGroup className='mb-3'>
                 <FormControl
+                    ref={inputRef}
                     size='lg'
                     type="text"
                     placeholder="Send a message..."
@@ -69,14 +76,14 @@ export default function ChatInput({ onSend }) {
                     onChange={handleInputChange}
                     onKeyDown={handleKeyPress}
                     style={{ border: '1px solid grey' }}
-
+                    disabled={disabled}
                 />
                 <Button
                     onClick={handleSendClick}
                     variant="dark"
                     id="button-chat"
                     style={{ border: '1px solid grey' }}
-
+                    disabled={disabled}
                 >
                     {sendButtonIcon()}
                 </Button>

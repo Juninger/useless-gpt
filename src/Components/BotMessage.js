@@ -11,7 +11,7 @@ function BotMessage(props) {
 
     const [isLoading, setIsLoading] = useState(true); // Tracks artificial loading of answer from bot
 
-    const { message, last } = props;
+    const { message, last, enableInput } = props;
 
     // Triggers animation of figure-element when the component renders
     useEffect(() => {
@@ -44,6 +44,7 @@ function BotMessage(props) {
         const delay = Math.floor(Math.random() * 2500) + 2000;
         const timer = setTimeout(() => {
             setIsLoading(false);
+            enableInput(); //re-enables the input field when bot message is added
         }, delay);
         return () => clearTimeout(timer);
     }, []);
