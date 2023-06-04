@@ -16,34 +16,53 @@ function Chat() {
 
   // Automatically scrolls to bottom when a new message is added
   useEffect(() => {
-    if (userMessages.length > 0) {
+    if (botMessages.length > 0) {
       const chatContainer = chatContainerRef.current;
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
-  }, [userMessages]);
+  }, [botMessages]);
 
   // Called from ChatInput component when user sends a new message
   // TODO: Update with logic to randomize which API that should be called to GET an answer
   function addMessage(message) {
 
-    getKanyeQuote()
+    getTrumpQuote()
       .then((resp) => { //TODO: Error handling
 
+        const date = resp['appeared_at'].substring(0, 10);
+
         const newBotMessage = {
-          text: resp,
-          author: 'Kanye West',
-          url: 'https://github.com/ajzbc/kanye.rest/blob/master/quotes.json',
-          source: 'source'
+          text: resp.value,
+          author: 'Donald Trump',
+          url: resp['_links'].self.href,
+          source: date
         }
 
-        setUserMessages((prevMess) => [...prevMess, message]);
         setBotMessages((prevMess) => [...prevMess, newBotMessage]);
+        setUserMessages((prevMess) => [...prevMess, message]);
 
-        /*
-        make sure to always update userMessage last, as this will trigger 
-        a re-render and needs botmessage to be ready
-        */
-      });
+      })
+
+
+
+    // getKanyeQuote()
+    //   .then((resp) => { //TODO: Error handling
+
+    //     const newBotMessage = {
+    //       text: resp,
+    //       author: 'Kanye West',
+    //       url: 'https://github.com/ajzbc/kanye.rest/blob/master/quotes.json',
+    //       source: 'source'
+    //     }
+
+    //     setUserMessages((prevMess) => [...prevMess, message]);
+    //     setBotMessages((prevMess) => [...prevMess, newBotMessage]);
+
+    //     /*
+    //     make sure to always update userMessage last, as this will trigger 
+    //     a re-render and needs botmessage to be ready
+    //     */
+    //   });
 
   };
 
@@ -54,6 +73,16 @@ function Chat() {
       .then((response) => {
         const quote = response.data.quote;
         return quote;
+      });
+  }
+
+  // Called to retrieve a random Donald Trump quote 
+  function getTrumpQuote() {
+
+    return axios.get('https://tronalddump.io/random/quote') //TODO: Error handling
+      .then((response) => {
+        const data = response.data;
+        return data;
       });
   }
 
@@ -77,8 +106,6 @@ function Chat() {
       <ChatInput onSend={addMessage} />
     </Container>
   );
-
-
 }
 
 export default Chat;
