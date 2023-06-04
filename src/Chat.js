@@ -16,6 +16,7 @@ function Chat() {
   //used to reference the current element to animate
   const userMessageRef = useRef(null);
   const botMessageRef = useRef(null);
+  const placeholderRef = useRef(null);
 
   const chatContainerRef = useRef(null);
 
@@ -37,7 +38,7 @@ function Chat() {
 
   // Used to animate botMessages
   useEffect(() => {
-    if (botMessages.length > 0) {
+    if (!isLoading && botMessages.length > 0) {
       anime({
         targets: botMessageRef.current,
         opacity: [0, 1],
@@ -51,15 +52,16 @@ function Chat() {
     To make sure the animation triggers when the artifical loading component is removed,
     isLoading is passed as a dependency    
     */
-  }, [isLoading]);
+  }, [isLoading, botMessages]);
 
   // Generates a random delay to simulate the UselessGPT thinking (which it really really really isn't)
   useEffect(() => {
-    const delay = Math.floor(Math.random() * 2500) + 2000;
     setIsLoading(true); // Resets loading state when a new bot message is added
-    setTimeout(() => {
+    const delay = Math.floor(Math.random() * 2500) + 2000;
+    const timer = setTimeout(() => {
       setIsLoading(false);
     }, delay);
+    return () => clearTimeout(timer);
   }, [botMessages]);
 
   // Called from ChatInput component when user sends a new message
@@ -76,8 +78,8 @@ function Chat() {
           source: 'source'
         }
 
-        setBotMessages([...botMessages, newBotMessage]);
-        setUserMessages([...userMessages, message]);
+        setBotMessages((prevMess) => [...prevMess, newBotMessage]);
+        setUserMessages((prevMess) => [...prevMess, message]);
         /*
         make sure to always update userMessage last, as this will trigger 
         a re-render and needs botmessage to be ready
@@ -107,7 +109,7 @@ function Chat() {
               <UserMessage key={index + message.text} message={message} ref={userMessageRef} />
               {isLoading && index === userMessages.length - 1 ? (
                 // Checking index to only render placeholder for latest message
-                <PlaceholdeMessage></PlaceholdeMessage>
+                <PlaceholdeMessage key={`placeholder-${index}`} ref={placeholderRef} />
               ) : (
                 <BotMessage key={index + botMessages[index].text} message={botMessages[index]} ref={botMessageRef} />
               )}
