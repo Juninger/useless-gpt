@@ -4,7 +4,7 @@ Welcome to **UselessGPT!**
 
 *This application was created for the VG-assignment in 'Cross-platform Applications with Web Technologies' (DA395A).*
 
-It works just like the popular ChatGPT, with the *minor* difference that all answers are completely useless and out-of-context. Instead of creating meaningful and relevant responses, UselessGPT delivers pseudo-random messages which can contain quotes from Donald Trump or Kanye West, or themed facts about numbers.
+It works just like the popular ChatGPT, with the *minor* difference that all answers are completely useless and out-of-context. Instead of creating meaningful and relevant responses, UselessGPT delivers pseudo-random messages which can contain quotes from Donald Trump and Kanye West, or facts about numbers.
 
 > :warning: **Warning:** Some responses "generated" by UselessGPT may contain foul language or inappropriate content.
 
@@ -65,6 +65,7 @@ The project utilizes the following frameworks and libraries:
   - Used for HTTP requests 
 - AnimeJS: [Official documentation](https://animejs.com/documentation/)
   - Used to create animations for rendering new messages
+>❗If you encounter any issues with the animations, try opening the application in another browser
 
 ## License
 
