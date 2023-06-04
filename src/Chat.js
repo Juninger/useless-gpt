@@ -4,6 +4,8 @@ import SiteHeader from "./Components/SiteHeader";
 import UserMessage from "./Components/UserMessage";
 import BotMessage from "./Components/BotMessage";
 import axios from 'axios';
+import { Container } from 'react-bootstrap';
+
 
 function Chat() {
 
@@ -56,27 +58,27 @@ function Chat() {
   }
 
   return (
-    <>
-      <div className="container bg-dark-subtle mt-4 pt-5" style={{ minHeight: "95vh", display: "flex", flexDirection: "column" }}>
-        <SiteHeader />
+    <Container className="bg-dark-subtle mt-4 pt-5" style={{ minHeight: "95vh", display: "flex", flexDirection: "column" }}>
+      <SiteHeader />
 
-        <div id="chat-container" ref={chatContainerRef} className="overflow-x-hidden p-3" style={{ maxHeight: "calc(95vh - 150px)", width: "100%" }}>
-          {userMessages.map((message, index) => (
-            <Fragment key={message.text + botMessages[index].text}>
-              <UserMessage key={index + message.text} message={message} />
-              <BotMessage
-                key={index + botMessages[index].text}
-                message={botMessages[index]}
-                last={index === botMessages.length-1} // If final element, we handle rendering & animations differently
-              />
-            </Fragment>
-          ))}
-        </div>
+      <Container id="chat-container" ref={chatContainerRef} className="overflow-x-hidden p-3" style={{ maxHeight: "calc(95vh - 150px)", width: "100%" }}>
+        {userMessages.map((message, index) => (
+          <Fragment key={message.text + botMessages[index].text}>
+            <UserMessage key={index + message.text} message={message} />
+            <BotMessage
+              key={index + botMessages[index].text}
+              message={botMessages[index]}
+              last={index === botMessages.length - 1} // If final element, we handle rendering & animations differently
+            />
+          </Fragment>
+        ))}
+      </Container>
 
-        <ChatInput onSend={addMessage}></ChatInput>
-      </div>
-    </>
+      <ChatInput onSend={addMessage} />
+    </Container>
   );
+
+
 }
 
 export default Chat;
