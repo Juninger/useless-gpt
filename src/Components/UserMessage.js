@@ -3,10 +3,11 @@ import anime from 'animejs';
 
 const UserMessage = forwardRef(function UserMessage(props) {
 
-    const figureRef = useRef(null);
+    const figureRef = useRef(null); // Reference to element that should be animated
 
     const { message } = props;
 
+    // Triggers animation of figure-element when the component renders
     useEffect(() => {
         const figElement = figureRef.current;
         anime({

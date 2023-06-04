@@ -4,10 +4,8 @@ import SiteHeader from "./Components/SiteHeader";
 import UserMessage from "./Components/UserMessage";
 import BotMessage from "./Components/BotMessage";
 import axios from 'axios';
-import PlaceholderMessage from "./Components/PlaceholderMessage";
 
 function Chat() {
-  const [isLoading, setIsLoading] = useState(true);
 
   const [userMessages, setUserMessages] = useState([]); //consider this 'questions'
   const [botMessages, setBotMessages] = useState([]); //consider this 'answers'
@@ -21,16 +19,6 @@ function Chat() {
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
   }, [userMessages]);
-
-  // Generates a random delay to simulate the UselessGPT thinking (which it really really really isn't)
-  useEffect(() => {
-    setIsLoading(true); // Resets loading state when a new bot message is added
-    const delay = Math.floor(Math.random() * 2500) + 2000;
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, delay);
-    return () => clearTimeout(timer);
-  }, [botMessages]);
 
   // Called from ChatInput component when user sends a new message
   // TODO: Update with logic to randomize which API that should be called to GET an answer
@@ -46,8 +34,9 @@ function Chat() {
           source: 'source'
         }
 
-        setBotMessages((prevMess) => [...prevMess, newBotMessage]);
         setUserMessages((prevMess) => [...prevMess, message]);
+        setBotMessages((prevMess) => [...prevMess, newBotMessage]);
+
         /*
         make sure to always update userMessage last, as this will trigger 
         a re-render and needs botmessage to be ready
@@ -75,12 +64,11 @@ function Chat() {
           {userMessages.map((message, index) => (
             <Fragment key={message.text + botMessages[index].text}>
               <UserMessage key={index + message.text} message={message} />
-              {isLoading && index === userMessages.length - 1 ? (
-                // Checking index to only render placeholder for latest message
-                <PlaceholderMessage key={`placeholder-${index}`} />
-              ) : (
-                <BotMessage key={index + botMessages[index].text} message={botMessages[index]} />
-              )}
+              <BotMessage
+                key={index + botMessages[index].text}
+                message={botMessages[index]}
+                last={index === botMessages.length-1} // If final element, we handle rendering & animations differently
+              />
             </Fragment>
           ))}
         </div>

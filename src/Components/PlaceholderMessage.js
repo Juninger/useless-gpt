@@ -4,8 +4,9 @@ import anime from 'animejs';
 
 const PlaceholderMessage = forwardRef(function PlaceholderMessage(props) {
 
-    const figureRef = useRef(null);
+    const figureRef = useRef(null); // Reference to element that should be animated
 
+    // Triggers animation of figure-element when the component renders
     useEffect(() => {
         const figElement = figureRef.current;
         anime({
