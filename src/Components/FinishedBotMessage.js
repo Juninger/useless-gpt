@@ -1,7 +1,10 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useState } from 'react'
 import Figure from 'react-bootstrap/Figure';
+import Collapse from 'react-bootstrap/Collapse';
 
 const FinishedBotMessage = forwardRef(function FinishedBotMessage(props, ref) {
+
+    const [open, setOpen] = useState(false);
 
     const { message } = props;
 
@@ -17,9 +20,10 @@ const FinishedBotMessage = forwardRef(function FinishedBotMessage(props, ref) {
 
     return (
         <Figure ref={ref} className="text-start overflow-hidden">
-            <blockquote className="blockquote">
+            <blockquote style={{ cursor: "pointer" }} onClick={() => setOpen(!open)} className="blockquote">
                 <p>{botPicture()} {message.text}</p>
             </blockquote>
+            <Collapse in={open}>
             <Figure.Caption
                 className="blockquote-footer">
                 {message.author + ', '}
@@ -29,6 +33,7 @@ const FinishedBotMessage = forwardRef(function FinishedBotMessage(props, ref) {
                     </a>
                 </cite>
             </Figure.Caption>
+            </Collapse>
         </Figure>
     )
 })
