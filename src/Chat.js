@@ -23,9 +23,9 @@ function Chat() {
   }, [botMessages]);
 
   // Called from ChatInput component when user sends a new message
-  // TODO: Update with logic to randomize which API that should be called to GET an answer
   function handleNewMessage(message) {
 
+    // List of available APIs to use. Picks one at random.
     const APIs = [getNumberFact, getTrumpQuote, getKanyeQuote];
     const idx = Math.floor(Math.random() * APIs.length);
     const randomAPI = APIs[idx];
@@ -61,49 +61,70 @@ function Chat() {
           url: 'https://github.com/ajzbc/kanye.rest/blob/master/quotes.json',
           source: 'source'
         }
-
       }
 
       setBotMessages((prevMess) => [...prevMess, newBotMessage]);
       setUserMessages((prevMess) => [...prevMess, message]);
 
     })
-
+    .catch((error) => { // Creates a manual error message if GET fails
+      console.error('Error:', error);
+      const newBotMessage = {
+        text: "Error creating response",
+        author: 'UselessGPT',
+        url: 'https://github.com/Juninger/useless-gpt',
+        source: 'GitHub'
+      }
+      setBotMessages((prevMess) => [...prevMess, newBotMessage]);
+      setUserMessages((prevMess) => [...prevMess, message]);
+    });
   };
+
+    // Called to retrieve a random fact about math / years / date.  
+    function getNumberFact() {
+
+      // We randomly pick a type of fact to fetch from API
+      const type = ['math', 'date', 'year', 'trivia'];
+      const idx = Math.floor(Math.random() * type.length);
+  
+      const URL = `http://numbersapi.com/random/${type[idx]}?json`;
+  
+      return axios.get(URL)
+        .then((response) => {
+          const data = response.data;
+          return data;
+        })
+        .catch((error) => {
+          console.error("Could not GET Number fact:", error);
+          throw error;
+        });
+    }
+
+      // Called to retrieve a random Donald Trump quote 
+  function getTrumpQuote() {
+
+    return axios.get('https://tronalddump.io/random/quote') 
+      .then((response) => {
+        const data = response.data;
+        return data;
+      })
+      .catch((error) => {
+        console.error("Could not GET Donald Trump quote:", error);
+        throw error;
+      });
+  }
 
   // Called to retrieve a random Kanye West quote 
   function getKanyeQuote() {
 
-    return axios.get('https://api.kanye.rest') //TODO: Error handling
+    return axios.get('https://api.kanye.rest')
       .then((response) => {
         const quote = response.data.quote;
         return quote;
-      });
-  }
-
-  // Called to retrieve a random Donald Trump quote 
-  function getTrumpQuote() {
-
-    return axios.get('https://tronalddump.io/random/quote') //TODO: Error handling
-      .then((response) => {
-        const data = response.data;
-        return data;
-      });
-  }
-
-  // Called to retrieve a random fact about math / years / date.  
-  function getNumberFact() {
-
-    // We randomly pick a type of fact to fetch from API
-    const type = ['math', 'date', 'year', 'trivia'];
-    const idx = Math.floor(Math.random() * type.length);
-
-    const URL = `http://numbersapi.com/random/${type[idx]}?json`;
-
-    return axios.get(URL) //TODO: Error handling
-      .then((response) => {
-        const data = response.data;
-        return data;
+      })
+      .catch((error) => {
+        console.error("Could not GET Kanye West quote:", error);
+        throw error;
       });
   }
 
