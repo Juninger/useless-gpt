@@ -24,54 +24,50 @@ function Chat() {
 
   // Called from ChatInput component when user sends a new message
   // TODO: Update with logic to randomize which API that should be called to GET an answer
-  function addMessage(message) {
+  function handleNewMessage(message) {
 
-    getNumberFact()
-      .then((resp) => {
+    const APIs = [getNumberFact, getTrumpQuote, getKanyeQuote];
+    const idx = Math.floor(Math.random() * APIs.length);
+    const randomAPI = APIs[idx];
 
-        const newBotMessage = {
-          text: resp.text,
+    randomAPI().then((response) => {
+      let newBotMessage;
+
+      if (randomAPI === getNumberFact) {
+
+        newBotMessage = {
+          text: response.text,
           author: 'Numbers-API',
-          url: `http://numbersapi.com/${resp.number}`,
-          source: `${resp.number}`
+          url: `http://numbersapi.com/${response.number}`,
+          source: `${response.number}`
+        }
+         
+      } else if (randomAPI === getTrumpQuote) {
+
+        const date = response['appeared_at'].substring(0, 10);
+
+        newBotMessage = {
+          text: response.value,
+          author: 'Donald Trump',
+          url: response['_links'].self.href,
+          source: date
+        }
+        
+      } else if (randomAPI === getKanyeQuote) {
+
+        newBotMessage = {
+          text: response,
+          author: 'Kanye West',
+          url: 'https://github.com/ajzbc/kanye.rest/blob/master/quotes.json',
+          source: 'source'
         }
 
-        setBotMessages((prevMess) => [...prevMess, newBotMessage]);
-        setUserMessages((prevMess) => [...prevMess, message]);
+      }
 
-      })
+      setBotMessages((prevMess) => [...prevMess, newBotMessage]);
+      setUserMessages((prevMess) => [...prevMess, message]);
 
-    // getTrumpQuote()
-    //   .then((resp) => { //TODO: Error handling
-
-    //     const date = resp['appeared_at'].substring(0, 10);
-
-    //     const newBotMessage = {
-    //       text: resp.value,
-    //       author: 'Donald Trump',
-    //       url: resp['_links'].self.href,
-    //       source: date
-    //     }
-
-    //     setBotMessages((prevMess) => [...prevMess, newBotMessage]);
-    //     setUserMessages((prevMess) => [...prevMess, message]);
-
-    //   })
-
-    // getKanyeQuote()
-    //   .then((resp) => { //TODO: Error handling
-
-    //     const newBotMessage = {
-    //       text: resp,
-    //       author: 'Kanye West',
-    //       url: 'https://github.com/ajzbc/kanye.rest/blob/master/quotes.json',
-    //       source: 'source'
-    //     }
-
-    //     setBotMessages((prevMess) => [...prevMess, newBotMessage]);
-    //     setUserMessages((prevMess) => [...prevMess, message]);
-
-    //   });
+    })
 
   };
 
@@ -128,7 +124,7 @@ function Chat() {
         ))}
       </Container>
 
-      <ChatInput onSend={addMessage} />
+      <ChatInput onSend={handleNewMessage} />
     </Container>
   );
 }
