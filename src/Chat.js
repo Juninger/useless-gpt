@@ -5,7 +5,7 @@ import UserMessage from "./Components/UserMessage";
 import BotMessage from "./Components/BotMessage";
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
-
+import WelcomeMessage from "./Components/WelcomeMessage";
 
 function Chat() {
 
@@ -13,6 +13,8 @@ function Chat() {
   const [botMessages, setBotMessages] = useState([]); //consider this 'answers'
 
   const [inputDisabled, setInputDisabled] = useState(false); //used to temporarily disable input field when waiting for response
+
+  const [showStartMessage, setShowStartMessage] = useState(true);
 
   const chatContainerRef = useRef(null);
 
@@ -69,6 +71,7 @@ function Chat() {
 
       setBotMessages((prevMess) => [...prevMess, newBotMessage]);
       setUserMessages((prevMess) => [...prevMess, message]);
+      setShowStartMessage(false);
 
     })
       .catch((error) => { // Creates a manual error message if GET fails
@@ -81,6 +84,7 @@ function Chat() {
         }
         setBotMessages((prevMess) => [...prevMess, errorMessage]);
         setUserMessages((prevMess) => [...prevMess, message]);
+        setShowStartMessage(false);
       });
   };
 
@@ -137,6 +141,9 @@ function Chat() {
       <SiteHeader />
 
       <Container id="chat-container" ref={chatContainerRef} className="overflow-x-hidden p-3" style={{ maxHeight: "calc(95vh - 150px)", width: "100%" }}>
+        {showStartMessage && (
+          <WelcomeMessage/>
+        )}
         {userMessages.map((message, index) => (
           <Fragment key={message.text + botMessages[index].text}>
             <UserMessage key={index + message.text} message={message} />
