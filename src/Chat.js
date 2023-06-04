@@ -26,16 +26,14 @@ function Chat() {
   // TODO: Update with logic to randomize which API that should be called to GET an answer
   function addMessage(message) {
 
-    getTrumpQuote()
-      .then((resp) => { //TODO: Error handling
-
-        const date = resp['appeared_at'].substring(0, 10);
+    getNumberFact()
+      .then((resp) => {
 
         const newBotMessage = {
-          text: resp.value,
-          author: 'Donald Trump',
-          url: resp['_links'].self.href,
-          source: date
+          text: resp.text,
+          author: 'Numbers-API',
+          url: `http://numbersapi.com/${resp.number}`,
+          source: `${resp.number}`
         }
 
         setBotMessages((prevMess) => [...prevMess, newBotMessage]);
@@ -43,7 +41,22 @@ function Chat() {
 
       })
 
+    // getTrumpQuote()
+    //   .then((resp) => { //TODO: Error handling
 
+    //     const date = resp['appeared_at'].substring(0, 10);
+
+    //     const newBotMessage = {
+    //       text: resp.value,
+    //       author: 'Donald Trump',
+    //       url: resp['_links'].self.href,
+    //       source: date
+    //     }
+
+    //     setBotMessages((prevMess) => [...prevMess, newBotMessage]);
+    //     setUserMessages((prevMess) => [...prevMess, message]);
+
+    //   })
 
     // getKanyeQuote()
     //   .then((resp) => { //TODO: Error handling
@@ -55,13 +68,9 @@ function Chat() {
     //       source: 'source'
     //     }
 
-    //     setUserMessages((prevMess) => [...prevMess, message]);
     //     setBotMessages((prevMess) => [...prevMess, newBotMessage]);
+    //     setUserMessages((prevMess) => [...prevMess, message]);
 
-    //     /*
-    //     make sure to always update userMessage last, as this will trigger 
-    //     a re-render and needs botmessage to be ready
-    //     */
     //   });
 
   };
@@ -80,6 +89,22 @@ function Chat() {
   function getTrumpQuote() {
 
     return axios.get('https://tronalddump.io/random/quote') //TODO: Error handling
+      .then((response) => {
+        const data = response.data;
+        return data;
+      });
+  }
+
+  // Called to retrieve a random fact about math / years / date.  
+  function getNumberFact() {
+
+    // We randomly pick a type of fact to fetch from API
+    const type = ['math', 'date', 'year', 'trivia'];
+    const idx = Math.floor(Math.random() * type.length);
+
+    const URL = `http://numbersapi.com/random/${type[idx]}?json`;
+
+    return axios.get(URL) //TODO: Error handling
       .then((response) => {
         const data = response.data;
         return data;

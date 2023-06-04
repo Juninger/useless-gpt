@@ -15,7 +15,7 @@ function UserMessage(props) {
             opacity: [0, 1],
             translateY: [30, 0],
             scale: [0, 1],
-            duration: 300,
+            duration: 500,
             easing: "easeOutQuad",
         });
     }, []);
