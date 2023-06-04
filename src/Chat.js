@@ -45,7 +45,7 @@ function Chat() {
           url: `http://numbersapi.com/${response.number}`,
           source: `${response.number}`
         }
-         
+
       } else if (randomAPI === getTrumpQuote) {
 
         const date = response['appeared_at'].substring(0, 10);
@@ -56,7 +56,7 @@ function Chat() {
           url: response['_links'].self.href,
           source: date
         }
-        
+
       } else if (randomAPI === getKanyeQuote) {
 
         newBotMessage = {
@@ -71,43 +71,43 @@ function Chat() {
       setUserMessages((prevMess) => [...prevMess, message]);
 
     })
-    .catch((error) => { // Creates a manual error message if GET fails
-      console.error('Error:', error);
-      const errorMessage = {
-        text: "Error creating response",
-        author: 'UselessGPT',
-        url: 'https://github.com/Juninger/useless-gpt',
-        source: 'GitHub'
-      }
-      setBotMessages((prevMess) => [...prevMess, errorMessage]);
-      setUserMessages((prevMess) => [...prevMess, message]);
-    });
+      .catch((error) => { // Creates a manual error message if GET fails
+        console.error('Error:', error);
+        const errorMessage = {
+          text: "Error creating response",
+          author: 'UselessGPT',
+          url: 'https://github.com/Juninger/useless-gpt',
+          source: 'GitHub'
+        }
+        setBotMessages((prevMess) => [...prevMess, errorMessage]);
+        setUserMessages((prevMess) => [...prevMess, message]);
+      });
   };
 
-    // Called to retrieve a random fact about math / years / date.  
-    function getNumberFact() {
+  // Called to retrieve a random fact about math / years / date.  
+  function getNumberFact() {
 
-      // We randomly pick a type of fact to fetch from API
-      const type = ['math', 'date', 'year', 'trivia'];
-      const idx = Math.floor(Math.random() * type.length);
-  
-      const URL = `http://numbersapi.com/random/${type[idx]}?json`;
-  
-      return axios.get(URL)
-        .then((response) => {
-          const data = response.data;
-          return data;
-        })
-        .catch((error) => {
-          console.error("Could not GET Number fact:", error);
-          throw error;
-        });
-    }
+    // We randomly pick a type of fact to fetch from API
+    const type = ['math', 'date', 'year', 'trivia'];
+    const idx = Math.floor(Math.random() * type.length);
 
-      // Called to retrieve a random Donald Trump quote 
+    const URL = `http://numbersapi.com/random/${type[idx]}?json`;
+
+    return axios.get(URL)
+      .then((response) => {
+        const data = response.data;
+        return data;
+      })
+      .catch((error) => {
+        console.error("Could not GET Number fact:", error);
+        throw error;
+      });
+  }
+
+  // Called to retrieve a random Donald Trump quote 
   function getTrumpQuote() {
 
-    return axios.get('https://tronalddump.io/random/quote') 
+    return axios.get('https://tronalddump.io/random/quote')
       .then((response) => {
         const data = response.data;
         return data;
@@ -144,13 +144,13 @@ function Chat() {
               key={index + botMessages[index].text}
               message={botMessages[index]}
               last={index === botMessages.length - 1} // If final element, we handle rendering & animations differently
-              enableInput={()=> setInputDisabled(false)}
+              enableInput={() => setInputDisabled(false)}
             />
           </Fragment>
         ))}
       </Container>
 
-      <ChatInput onSend={handleNewMessage} disabled={inputDisabled}/>
+      <ChatInput onSend={handleNewMessage} disabled={inputDisabled} />
     </Container>
   );
 }
