@@ -12,6 +12,8 @@ function Chat() {
   const [userMessages, setUserMessages] = useState([]); //consider this 'questions'
   const [botMessages, setBotMessages] = useState([]); //consider this 'answers'
 
+  const [inputDisabled, setInputDisabled] = useState(false); //used to temporarily disable input field when waiting for response
+
   const chatContainerRef = useRef(null);
 
   // Automatically scrolls to bottom when a new message is added
@@ -23,91 +25,110 @@ function Chat() {
   }, [botMessages]);
 
   // Called from ChatInput component when user sends a new message
-  // TODO: Update with logic to randomize which API that should be called to GET an answer
-  function addMessage(message) {
+  function handleNewMessage(message) {
 
-    getNumberFact()
-      .then((resp) => {
+    setInputDisabled(true);
 
-        const newBotMessage = {
-          text: resp.text,
+    // List of available APIs to use. Picks one at random.
+    const APIs = [getNumberFact, getTrumpQuote, getKanyeQuote];
+    const idx = Math.floor(Math.random() * APIs.length);
+    const randomAPI = APIs[idx];
+
+    randomAPI().then((response) => {
+      let newBotMessage;
+
+      if (randomAPI === getNumberFact) {
+
+        newBotMessage = {
+          text: response.text,
           author: 'Numbers-API',
-          url: `http://numbersapi.com/${resp.number}`,
-          source: `${resp.number}`
+          url: `http://numbersapi.com/${response.number}`,
+          source: `${response.number}`
         }
+         
+      } else if (randomAPI === getTrumpQuote) {
 
-        setBotMessages((prevMess) => [...prevMess, newBotMessage]);
-        setUserMessages((prevMess) => [...prevMess, message]);
+        const date = response['appeared_at'].substring(0, 10);
 
-      })
+        newBotMessage = {
+          text: response.value,
+          author: 'Donald Trump',
+          url: response['_links'].self.href,
+          source: date
+        }
+        
+      } else if (randomAPI === getKanyeQuote) {
 
-    // getTrumpQuote()
-    //   .then((resp) => { //TODO: Error handling
+        newBotMessage = {
+          text: response,
+          author: 'Kanye West',
+          url: 'https://github.com/ajzbc/kanye.rest/blob/master/quotes.json',
+          source: 'source'
+        }
+      }
 
-    //     const date = resp['appeared_at'].substring(0, 10);
+      setBotMessages((prevMess) => [...prevMess, newBotMessage]);
+      setUserMessages((prevMess) => [...prevMess, message]);
 
-    //     const newBotMessage = {
-    //       text: resp.value,
-    //       author: 'Donald Trump',
-    //       url: resp['_links'].self.href,
-    //       source: date
-    //     }
-
-    //     setBotMessages((prevMess) => [...prevMess, newBotMessage]);
-    //     setUserMessages((prevMess) => [...prevMess, message]);
-
-    //   })
-
-    // getKanyeQuote()
-    //   .then((resp) => { //TODO: Error handling
-
-    //     const newBotMessage = {
-    //       text: resp,
-    //       author: 'Kanye West',
-    //       url: 'https://github.com/ajzbc/kanye.rest/blob/master/quotes.json',
-    //       source: 'source'
-    //     }
-
-    //     setBotMessages((prevMess) => [...prevMess, newBotMessage]);
-    //     setUserMessages((prevMess) => [...prevMess, message]);
-
-    //   });
-
+    })
+    .catch((error) => { // Creates a manual error message if GET fails
+      console.error('Error:', error);
+      const errorMessage = {
+        text: "Error creating response",
+        author: 'UselessGPT',
+        url: 'https://github.com/Juninger/useless-gpt',
+        source: 'GitHub'
+      }
+      setBotMessages((prevMess) => [...prevMess, errorMessage]);
+      setUserMessages((prevMess) => [...prevMess, message]);
+    });
   };
+
+    // Called to retrieve a random fact about math / years / date.  
+    function getNumberFact() {
+
+      // We randomly pick a type of fact to fetch from API
+      const type = ['math', 'date', 'year', 'trivia'];
+      const idx = Math.floor(Math.random() * type.length);
+  
+      const URL = `http://numbersapi.com/random/${type[idx]}?json`;
+  
+      return axios.get(URL)
+        .then((response) => {
+          const data = response.data;
+          return data;
+        })
+        .catch((error) => {
+          console.error("Could not GET Number fact:", error);
+          throw error;
+        });
+    }
+
+      // Called to retrieve a random Donald Trump quote 
+  function getTrumpQuote() {
+
+    return axios.get('https://tronalddump.io/random/quote') 
+      .then((response) => {
+        const data = response.data;
+        return data;
+      })
+      .catch((error) => {
+        console.error("Could not GET Donald Trump quote:", error);
+        throw error;
+      });
+  }
 
   // Called to retrieve a random Kanye West quote 
   function getKanyeQuote() {
 
-    return axios.get('https://api.kanye.rest') //TODO: Error handling
+    return axios.get('https://api.kanye.rest')
       .then((response) => {
         const quote = response.data.quote;
         return quote;
-      });
-  }
-
-  // Called to retrieve a random Donald Trump quote 
-  function getTrumpQuote() {
-
-    return axios.get('https://tronalddump.io/random/quote') //TODO: Error handling
-      .then((response) => {
-        const data = response.data;
-        return data;
-      });
-  }
-
-  // Called to retrieve a random fact about math / years / date.  
-  function getNumberFact() {
-
-    // We randomly pick a type of fact to fetch from API
-    const type = ['math', 'date', 'year', 'trivia'];
-    const idx = Math.floor(Math.random() * type.length);
-
-    const URL = `http://numbersapi.com/random/${type[idx]}?json`;
-
-    return axios.get(URL) //TODO: Error handling
-      .then((response) => {
-        const data = response.data;
-        return data;
+      })
+      .catch((error) => {
+        console.error("Could not GET Kanye West quote:", error);
+        throw error;
       });
   }
 
@@ -123,12 +144,13 @@ function Chat() {
               key={index + botMessages[index].text}
               message={botMessages[index]}
               last={index === botMessages.length - 1} // If final element, we handle rendering & animations differently
+              enableInput={()=> setInputDisabled(false)}
             />
           </Fragment>
         ))}
       </Container>
 
-      <ChatInput onSend={addMessage} />
+      <ChatInput onSend={handleNewMessage} disabled={inputDisabled}/>
     </Container>
   );
 }
