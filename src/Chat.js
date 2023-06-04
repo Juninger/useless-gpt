@@ -4,7 +4,6 @@ import SiteHeader from "./Components/SiteHeader";
 import UserMessage from "./Components/UserMessage";
 import BotMessage from "./Components/BotMessage";
 import axios from 'axios';
-import anime from 'animejs';
 import PlaceholderMessage from "./Components/PlaceholderMessage";
 
 function Chat() {
@@ -13,46 +12,15 @@ function Chat() {
   const [userMessages, setUserMessages] = useState([]); //consider this 'questions'
   const [botMessages, setBotMessages] = useState([]); //consider this 'answers'
 
-  //used to reference the current element to animate
-  const userMessageRef = useRef(null);
-  const botMessageRef = useRef(null);
-  const placeholderRef = useRef(null);
-
   const chatContainerRef = useRef(null);
 
-  // Automatically animates new messages when userMessages is updated with a new value
+  // Automatically scrolls to bottom when a new message is added
   useEffect(() => {
     if (userMessages.length > 0) {
-      anime({
-        targets: userMessageRef.current,
-        opacity: [0, 1],
-        translateY: [100, 0],
-        scale: [0, 1],
-        duration: 300,
-        easing: "easeOutQuad",
-      });
       const chatContainer = chatContainerRef.current;
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
   }, [userMessages]);
-
-  // Used to animate botMessages
-  useEffect(() => {
-    if (!isLoading && botMessages.length > 0) {
-      anime({
-        targets: botMessageRef.current,
-        opacity: [0, 1],
-        translateY: [30, 0],
-        scale: [0, 1],
-        duration: 300,
-        easing: "easeOutQuad",
-      });
-    }
-    /* 
-    To make sure the animation triggers when the artifical loading component is removed,
-    isLoading is passed as a dependency    
-    */
-  }, [isLoading, botMessages]);
 
   // Generates a random delay to simulate the UselessGPT thinking (which it really really really isn't)
   useEffect(() => {
@@ -106,12 +74,12 @@ function Chat() {
         <div id="chat-container" ref={chatContainerRef} className="overflow-x-hidden p-3" style={{ maxHeight: "calc(95vh - 150px)", width: "100%" }}>
           {userMessages.map((message, index) => (
             <Fragment key={message.text + botMessages[index].text}>
-              <UserMessage key={index + message.text} message={message} ref={userMessageRef} />
+              <UserMessage key={index + message.text} message={message} />
               {isLoading && index === userMessages.length - 1 ? (
                 // Checking index to only render placeholder for latest message
-                <PlaceholderMessage key={`placeholder-${index}`} ref={placeholderRef} />
+                <PlaceholderMessage key={`placeholder-${index}`} />
               ) : (
-                <BotMessage key={index + botMessages[index].text} message={botMessages[index]} ref={botMessageRef} />
+                <BotMessage key={index + botMessages[index].text} message={botMessages[index]} />
               )}
             </Fragment>
           ))}

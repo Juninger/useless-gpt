@@ -1,7 +1,21 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useRef, useEffect } from 'react'
 import Spinner from 'react-bootstrap/Spinner'
+import anime from 'animejs';
 
-const PlaceholderMessage = forwardRef(function PlaceholderMessage(props, ref) {
+const PlaceholderMessage = forwardRef(function PlaceholderMessage(props) {
+
+    const figureRef = useRef(null);
+
+    useEffect(() => {
+        const figElement = figureRef.current;
+        anime({
+            targets: figElement,
+            opacity: [0, 1],
+            translateX: [-200, 0],
+            duration: 500,
+            easing: "easeOutQuad",
+        });
+    }, []);
 
     // Bootstrap Icon --> https://icons.getbootstrap.com/icons/hourglass-split/
     function botPicture() {
@@ -16,7 +30,7 @@ const PlaceholderMessage = forwardRef(function PlaceholderMessage(props, ref) {
     }
 
     return (
-        <figure ref={ref} className="text-start overflow-hidden">
+        <figure ref={figureRef} className="text-start overflow-hidden">
             <blockquote className="blockquote">
                 <>
                     {botPicture()}

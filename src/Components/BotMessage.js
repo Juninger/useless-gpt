@@ -1,7 +1,21 @@
-import React from 'react'
-import { forwardRef } from 'react';
+import React, { forwardRef, useRef, useEffect } from 'react'
+import anime from 'animejs';
 
-const BotMessage = forwardRef(function BotMessage(props, ref) {
+const BotMessage = forwardRef(function BotMessage(props) {
+
+    const figureRef = useRef(null);
+
+    useEffect(() => {
+        const figElement = figureRef.current;
+        anime({
+            targets: figElement,
+            opacity: [0, 1],
+            translateY: [30, 0],
+            scale: [0, 1],
+            duration: 300,
+            easing: "easeOutQuad",
+        });
+    }, []);
 
     const { message } = props;
 
@@ -16,7 +30,7 @@ const BotMessage = forwardRef(function BotMessage(props, ref) {
     }
 
     return (
-        <figure ref={ref} className="text-start overflow-hidden">
+        <figure ref={figureRef} className="text-start overflow-hidden">
             <blockquote className="blockquote">
                 <p>{botPicture()} {message.text}</p>
             </blockquote>

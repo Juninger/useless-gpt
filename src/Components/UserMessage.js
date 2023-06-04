@@ -1,9 +1,23 @@
-import React from 'react'
-import { forwardRef } from 'react';
+import React, { forwardRef, useRef, useEffect } from 'react'
+import anime from 'animejs';
 
-const UserMessage = forwardRef(function UserMessage(props, ref) {
+const UserMessage = forwardRef(function UserMessage(props) {
+
+    const figureRef = useRef(null);
 
     const { message } = props;
+
+    useEffect(() => {
+        const figElement = figureRef.current;
+        anime({
+            targets: figElement,
+            opacity: [0, 1],
+            translateY: [30, 0],
+            scale: [0, 1],
+            duration: 300,
+            easing: "easeOutQuad",
+        });
+    }, []);
 
     // Bootstrap Icon --> https://icons.getbootstrap.com/icons/person-workspace/
     function userPicture() {
@@ -16,7 +30,7 @@ const UserMessage = forwardRef(function UserMessage(props, ref) {
     }
 
     return (
-        <figure ref={ref} className="text-end overflow-hidden">
+        <figure ref={figureRef} className="text-end overflow-hidden">
             <blockquote className="blockquote">
                 <p>{message.text} {userPicture()}</p>
             </blockquote>
