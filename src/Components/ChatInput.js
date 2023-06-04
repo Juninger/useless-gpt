@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
 
 
 export default function ChatInput({ onSend }) {
@@ -57,7 +58,7 @@ export default function ChatInput({ onSend }) {
     }
 
     return (
-        <div className="mt-auto">
+        <Container className="mt-auto">
             <InputGroup className='mb-3'>
                 <FormControl
                     size='lg'
@@ -80,5 +81,5 @@ export default function ChatInput({ onSend }) {
                     {sendButtonIcon()}
                 </Button>
             </InputGroup>
-        </div>)
+        </Container>)
 }

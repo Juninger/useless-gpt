@@ -4,7 +4,7 @@ import SiteHeader from "./Components/SiteHeader";
 import UserMessage from "./Components/UserMessage";
 import BotMessage from "./Components/BotMessage";
 import axios from 'axios';
-import { Container } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
 
 
 function Chat() {
@@ -58,7 +58,7 @@ function Chat() {
   }
 
   return (
-    <Container className="bg-dark-subtle mt-4 pt-5" style={{ minHeight: "95vh", display: "flex", flexDirection: "column" }}>
+    <Container className="bg-dark-subtle mt-4 pt-5 rounded" style={{ minHeight: "95vh", display: "flex", flexDirection: "column" }}>
       <SiteHeader />
 
       <Container id="chat-container" ref={chatContainerRef} className="overflow-x-hidden p-3" style={{ maxHeight: "calc(95vh - 150px)", width: "100%" }}>
