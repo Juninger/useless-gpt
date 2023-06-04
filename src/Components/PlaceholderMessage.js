@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import Spinner from 'react-bootstrap/Spinner'
 
-const PlaceholdeMessage = forwardRef(function PlaceholdeMessage(props, ref) {
+const PlaceholderMessage = forwardRef(function PlaceholderMessage(props, ref) {
 
     // Bootstrap Icon --> https://icons.getbootstrap.com/icons/hourglass-split/
     function botPicture() {
@@ -38,4 +38,4 @@ const PlaceholdeMessage = forwardRef(function PlaceholdeMessage(props, ref) {
     )
 });
 
-export default PlaceholdeMessage;
+export default PlaceholderMessage;

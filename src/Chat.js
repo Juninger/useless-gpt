@@ -5,7 +5,7 @@ import UserMessage from "./Components/UserMessage";
 import BotMessage from "./Components/BotMessage";
 import axios from 'axios';
 import anime from 'animejs';
-import PlaceholdeMessage from "./Components/PlaceholdeMessage";
+import PlaceholderMessage from "./Components/PlaceholderMessage";
 
 function Chat() {
   const [isLoading, setIsLoading] = useState(true);
@@ -109,7 +109,7 @@ function Chat() {
               <UserMessage key={index + message.text} message={message} ref={userMessageRef} />
               {isLoading && index === userMessages.length - 1 ? (
                 // Checking index to only render placeholder for latest message
-                <PlaceholdeMessage key={`placeholder-${index}`} ref={placeholderRef} />
+                <PlaceholderMessage key={`placeholder-${index}`} ref={placeholderRef} />
               ) : (
                 <BotMessage key={index + botMessages[index].text} message={botMessages[index]} ref={botMessageRef} />
               )}
