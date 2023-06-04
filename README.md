@@ -8,6 +8,8 @@ It works just like the popular ChatGPT, with the *minor* difference that all ans
 
 > :warning: **Warning:** Some responses "generated" by UselessGPT may contain foul language or inappropriate content.
 
+![Screenshot of UselessGPT](https://github.com/Juninger/useless-gpt/blob/master/Screenshot.png)
+
 ## Installation
 
 1. Clone the repository:
