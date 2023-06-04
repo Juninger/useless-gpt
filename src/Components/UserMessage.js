@@ -1,7 +1,7 @@
-import React, { forwardRef, useRef, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import anime from 'animejs';
 
-const UserMessage = forwardRef(function UserMessage(props) {
+function UserMessage(props) {
 
     const figureRef = useRef(null); // Reference to element that should be animated
 
@@ -43,6 +43,6 @@ const UserMessage = forwardRef(function UserMessage(props) {
             </figcaption>
         </figure>
     )
-});
+};
 
 export default UserMessage;

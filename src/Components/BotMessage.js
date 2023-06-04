@@ -1,9 +1,9 @@
-import React, { forwardRef, useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import anime from 'animejs';
 import Spinner from 'react-bootstrap/Spinner'
 
 
-const BotMessage = forwardRef(function BotMessage(props, ref) {
+function BotMessage(props) {
 
     const botMessageRef = useRef(null); // Reference to element that should be animated
     const placeholderRef = useRef(null); // Reference to element that should be animated
@@ -110,6 +110,6 @@ const BotMessage = forwardRef(function BotMessage(props, ref) {
             </figure>
         )
     }
-});
+};
 
 export default BotMessage;
