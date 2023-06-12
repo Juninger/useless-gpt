@@ -1,6 +1,6 @@
 # UselessGPT
 
-Welcome to **UselessGPT!** 
+Welcome to **UselessGPT!**
 
 *This application was created for the VG-assignment in 'Cross-platform Applications with Web Technologies' (DA395A).*
 
@@ -8,7 +8,7 @@ It works just like the popular ChatGPT, with the *minor* difference that all ans
 
 > :warning: **Warning:** Some responses "generated" by UselessGPT may contain foul language or inappropriate content.
 
-![Screenshot of UselessGPT](https://github.com/Juninger/useless-gpt/blob/master/Screenshot.png)
+![Screen recording of UselessGPT]("./Screenshots/chatting.gif")
 
 ## Installation
 
@@ -64,7 +64,7 @@ The project utilizes the following frameworks and libraries:
 - react-bootstrap: [Official website](https://react-bootstrap.github.io/)
   - Bootstrap in ready-to-use React-components  
 - Axios: [GitHub repository](https://github.com/axios/axios)
-  - Used for HTTP requests 
+  - Used for HTTP requests
 - AnimeJS: [Official documentation](https://animejs.com/documentation/)
   - Used to create animations for rendering new messages
 >❗If you encounter any issues with the animations, try opening the application in another browser
