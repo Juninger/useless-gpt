@@ -8,7 +8,7 @@ It works just like the popular ChatGPT, with the *minor* difference that all ans
 
 > :warning: **Warning:** Some responses "generated" by UselessGPT may contain foul language or inappropriate content.
 
-![Screen recording of UselessGPT]("./Screenshots/chatting.gif")
+![Screen recording of UselessGPT](/Screenshots/chatting.gif)
 
 ## Installation
 
