@@ -2,7 +2,7 @@
 
 Welcome to **UselessGPT!**
 
-It works just like the popular ChatGPT, with the *minor* difference that all answers are completely useless and out-of-context. Instead of creating meaningful and relevant responses, UselessGPT delivers pseudo-random messages which can contain quotes from Donald Trump and Kanye West, or facts about numbers.
+It works just like the popular ChatGPT, with the *minor* difference that all answers are completely useless and out-of-context. Instead of creating meaningful and relevant responses, UselessGPT delivers pseudo-random messages which can contain quotes from Donald Trump or Kanye West.
 
 > :warning: **Note:** Some responses "generated" by UselessGPT may contain foul language or inappropriate content.
 
@@ -54,7 +54,6 @@ This project uses the following external APIs to answer all your questions:
 
 - [Kanye Rest](https://kanye.rest/)
 - [Tronald Dump](https://www.tronalddump.io/)
-- [Numbers API](http://numbersapi.com/)
 
 ## Frameworks & Libraries
 

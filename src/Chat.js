@@ -30,23 +30,14 @@ function Chat() {
     setInputDisabled(true);
 
     // List of available APIs to use. Picks one at random.
-    const APIs = [getNumberFact, getTrumpQuote, getKanyeQuote];
+    const APIs = [getTrumpQuote, getKanyeQuote];
     const idx = Math.floor(Math.random() * APIs.length);
     const randomAPI = APIs[idx];
 
     randomAPI().then((response) => {
       let newBotMessage;
 
-      if (randomAPI === getNumberFact) {
-
-        newBotMessage = {
-          text: response.text,
-          author: 'Numbers-API',
-          url: `http://numbersapi.com/${response.number}`,
-          source: `${response.number}`
-        }
-
-      } else if (randomAPI === getTrumpQuote) {
+      if (randomAPI === getTrumpQuote) {
 
         const date = response['appeared_at'].substring(0, 10);
 
@@ -83,26 +74,6 @@ function Chat() {
       });
   };
 
-  // Called to retrieve a random fact about math / years / date.  
-  function getNumberFact() {
-
-    // We randomly pick a type of fact to fetch from API
-    const type = ['math', 'date', 'year', 'trivia'];
-    const idx = Math.floor(Math.random() * type.length);
-
-    const URL = `http://numbersapi.com/random/${type[idx]}?json`;
-
-    return axios.get(URL)
-      .then((response) => {
-        const data = response.data;
-        return data;
-      })
-      .catch((error) => {
-        console.error("Could not GET Number fact:", error);
-        throw error;
-      });
-  }
-
   // Called to retrieve a random Donald Trump quote 
   function getTrumpQuote() {
 
@@ -136,7 +107,7 @@ function Chat() {
       <SiteHeader />
 
       <Container id="chat-container" ref={chatContainerRef} className="overflow-x-hidden p-3" style={{ maxHeight: "calc(95vh - 150px)", width: "100%" }}>
-        <WelcomeMessage/>
+        <WelcomeMessage />
         {userMessages.map((message, index) => (
           <Fragment key={message.text + botMessages[index].text}>
             <UserMessage key={index + message.text} message={message} />
