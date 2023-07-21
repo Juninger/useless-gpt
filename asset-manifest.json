@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/useless-gpt/static/js/main.193c81cd.js",
+    "main.js": "/useless-gpt/static/js/main.85fb44b8.js",
     "index.html": "/useless-gpt/index.html",
-    "main.193c81cd.js.map": "/useless-gpt/static/js/main.193c81cd.js.map"
+    "main.85fb44b8.js.map": "/useless-gpt/static/js/main.85fb44b8.js.map"
   },
   "entrypoints": [
-    "static/js/main.193c81cd.js"
+    "static/js/main.85fb44b8.js"
   ]
 }
